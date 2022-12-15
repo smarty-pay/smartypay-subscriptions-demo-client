@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="user-scalable=0, initial-scale=1, minimum-scale=1, width=device-width, height=device-height">
+
+  <link rel="shortcut icon" href='./favicon.ico'>
+
+  <!-- bootstrap-->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.2/font/bootstrap-icons.css" rel="stylesheet">
+
+  <!-- app style -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:300,400,500" />
+  <link rel='stylesheet' href='./css/common.css' />
+  <link rel='stylesheet' href='./css/index.css' />
+
+
+  <title>Subscriptions Showcase</title>
+
+</head>
+<body>
+
+<div id='root' class='flex-col'>
+
+  <div id='top-menu' class='invisible flex-row panel flex-gap-8'>
+    <div id='top-status' class='hide alert flex-row flex-gap-8'>
+    </div>
+    <button id='connect-wallet' type="button" class="btn btn-outline-primary btn-lg">Connect Wallet</button>
+    <button id='disconnect-wallet' type="button" class="hide btn btn-outline-primary btn-lg">Disconnect</button>
+  </div>
+
+  <div id='main'>
+
+    <!-- Connect buttons -->
+    <div id='connect-buttons' class='hide flex-col flex-gap-8 panel panel-middle border rounded border-secondary'>
+      <button type="button" class="btn-close" aria-label="Close"></button>
+      <button id='connect-mm' type="button" class="btn btn-outline-secondary btn-lg">Metamask</button>
+      <button id='connect-wc' type="button" class="btn btn-outline-secondary btn-lg">WalletConnect</button>
+    </div>
+
+    <h6>All Subscriptions:</h6>
+    <div id='subscriptions-list' class='flex-row flex-gap-24 panel border rounded flex-wrap'>
+    </div>
+
+  </div>
+</div>
+
+<div id='templates' class='hide'>
+
+  <span class='top-status-connect-wallet' data-alert-type='primary'>
+    <i class="bi bi-info-circle"></i> Connect your Wallet to use subscriptions
+  </span>
+
+  <span class='top-status-need-metamask' data-alert-type='warning' data-closable='true'>
+    <i class="bi bi-exclamation-triangle"></i> Metamask not found.
+    <a target='_blank' href='https://metamask.io/download/'>You can install it here.</a>
+  </span>
+
+  <span class='top-status-wallet-connection-error' data-alert-type='warning' data-closable='true'>
+    <i class="bi bi-exclamation-triangle"></i> Wallet connection error: <span class='msg'>Unknown</span>
+  </span>
+
+  <span class='top-status-app-error' data-alert-type='warning' data-closable='true'>
+    <i class="bi bi-exclamation-triangle"></i> Got error: <span class='msg'>Unknown</span>
+  </span>
+
+  <span class='top-status-wait-wallet-operation' data-alert-type='primary'>
+    <i class="bi bi-hourglass-split"></i> Wait wallet operation...
+  </span>
+
+  <span class='top-status-wallet-address' data-alert-type='primary'>
+    <i class="bi bi-person-circle"></i> <span class='address'>Unknown address</span>
+  </span>
+
+  <span class='top-status-global-loading' data-alert-type='primary'>
+    <i class="bi bi-hourglass-split"></i> Please wait...
+  </span>
+
+
+  <span class='subscriptions-list-loading'>
+    <i class="bi bi-hourglass-split"></i> Loading subscriptions...
+  </span>
+
+  <div class="subscriptions-list-item card shadow" style="width: 18rem;">
+    <h5 class="card-header">
+      <span class='description'></span>
+    </h5>
+    <div class="card-body">
+      <h5 class="card-title">
+        price: <span class='amount'></span>
+      </h5>
+      <p class="card-text flex-col flex-gap-8">
+        <span>
+          pay period: <span class='period'></span> days
+        </span>
+        <span class='flex-row flex-gap-8 flex-align-baseline'>
+          tags: <span class="badge bg-light text-dark"><span class='tags'></span></span>
+        </span>
+      </p>
+    </div>
+    <div class='card-footer flex-col flex-gap-8'>
+      <div class='flex-row flex-gap-8 flex-align-baseline'>
+        <span>status:</span>
+        <span class='status fs-5'></span>
+      </div>
+      <button type="button" class="activate hide btn btn-outline-primary">Activate</button>
+      <button type="button" class="deactivate hide btn btn-outline-warning">Deactivate</button>
+    </div>
+  </div>
+
+  <span class='subscriptions-list-item-status-no-wallet badge bg-light text-dark'>
+    -
+  </span>
+
+  <span class='subscriptions-list-item-status-not-activated badge bg-light text-dark'>
+    Not Activated
+  </span>
+
+  <span class='subscriptions-list-item-status badge bg-light text-dark'>
+    STATUS_PLACE
+  </span>
+
+  <span class='subscriptions-list-loading-error'>
+    <i class="bi bi-exclamation-triangle"></i> Subscriptions loading error: "<span class='msg'>Unknown</span>"
+  </span>
+
+</div>
+
+
+
+
+<!-- external libs -->
+<!-- jquery-->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<!-- bootstrap -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+<!-- bignumber -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bignumber.js/8.0.2/bignumber.min.js"></script>
+<!-- web3 -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/web3/1.8.1/web3.min.js"></script>
+<!-- wallet-connect -->
+<script src="https://unpkg.com/@walletconnect/web3-provider@1.8.0/dist/umd/index.min.js"></script>
+
+
+<!-- app's logic -->
+<script src='./js/api/backend.js'></script>
+<script src='./js/api/blockchains.js'></script>
+<script src='./js/api/metamask.js'></script>
+<script src='./js/api/wallet-connect.js'></script>
+<script src='./js/api/web3-common.js'></script>
+<script src='./js/app-state.js'></script>
+<script src='./js/top-status.js'></script>
+<script src='./js/connect-wallet.js'></script>
+<script src='./js/disconnect-wallet.js'></script>
+<script src='./js/connect-buttons.js'></script>
+<script src='./js/subscriptions-list.js'></script>
+<script src='./js/user-sub-activation.js'></script>
+<script src='./js/user-sub-deactivation.js'></script>
+<script src='./js/index.js'></script>
+
+</body>
+</html>

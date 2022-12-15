@@ -1,0 +1,62 @@
+
+body {
+    background: whitesmoke;
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    justify-content: center;
+    min-height: 100vh;
+}
+
+#root {
+    background: white;
+    width: 800px;
+    margin: 4px auto;
+    padding: 2px 8px;
+    align-content: space-between;
+}
+
+#top-menu {
+    justify-content: flex-end;
+    align-items: center;
+}
+#top-menu > * {
+    margin: 0;
+}
+
+#top-status {
+    max-height: 100px;
+    overflow: auto;
+    line-break: anywhere;
+}
+
+#connect-buttons {
+    position: absolute;
+    z-index: 2;
+    right: 0;
+    top: 8px;
+    background-color: white;
+    width: 50%;
+    min-width: 300px;
+    padding: 8px;
+}
+#connect-buttons .btn-close {
+    align-self: flex-end;
+}
+
+#connect-wallet,
+#disconnect-wallet {
+    min-width: 168px;
+    height: 58px;
+}
+
+#main {
+    padding-top: 32px;
+    position: relative;
+    flex-grow: 4;
+    /*background-color: #eddeff;*/
+}
+
+#subscriptions-list {
+    padding: 24px 16px 32px 16px;
+}
