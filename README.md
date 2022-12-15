@@ -1,0 +1,1 @@
+# smartypay-subscriptions-demo-client
