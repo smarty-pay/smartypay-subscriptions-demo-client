@@ -14,7 +14,8 @@
     "express": "^4.18.2",
     "express-async-errors": "^3.1.1",
     "js-sha256": "^0.9.0",
-    "node-fetch": "^2.6.7"
+    "node-fetch": "^2.6.7",
+    "smartypay-node-sdk": "^1.0.10"
   },
   "devDependencies": {
     "nodemon": "^2.0.20"

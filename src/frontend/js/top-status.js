@@ -16,6 +16,8 @@ function initTopStatus(){
   body.on('wait-wallet-operation-stop', async ()=> updateTopStatus());
   body.on('activate-user-subscription-success', ()=> updateTopStatus());
   body.on('deactivate-user-subscription-success', ()=> updateTopStatus());
+  body.on('pause-user-subscription-success', ()=> updateTopStatus());
+  body.on('unpause-user-subscription-success', ()=> updateTopStatus());
 
   // special status
   body.on('no-metamask', ()=> showTopStatusNeedMetamask());

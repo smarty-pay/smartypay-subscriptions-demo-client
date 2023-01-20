@@ -39,7 +39,45 @@ const Web3CommonApi = {
 
   async walletTokenApprove(walletWeb3, assetInfo, ownerAddress, spenderAddress, approveAmount){
 
-    const {network, tokenId, decimals} = assetInfo;
+    await Web3CommonApi.switchWalletToAssetNetwork(walletWeb3, assetInfo);
+
+    const {tokenId} = assetInfo;
+    const contract = new walletWeb3.eth.Contract(Erc20ABI, tokenId);
+    const txResult = await contract.methods.approve(spenderAddress, approveAmount || MaxAmount).send({
+      from: ownerAddress
+    });
+
+    console.log('approve tx result', txResult);
+  },
+
+
+  async subscriptionPause(walletWeb3, assetInfo, ownerAddress, contractAddress){
+
+    await Web3CommonApi.switchWalletToAssetNetwork(walletWeb3, assetInfo);
+
+    const contract = new walletWeb3.eth.Contract(SubscriptionABI, contractAddress);
+    const txResult = await contract.methods.freeze().send({
+      from: ownerAddress
+    });
+
+    console.log('pause tx result', txResult);
+  },
+
+  async subscriptionUnpause(walletWeb3, assetInfo, ownerAddress, contractAddress){
+
+    await Web3CommonApi.switchWalletToAssetNetwork(walletWeb3, assetInfo);
+
+    const contract = new walletWeb3.eth.Contract(SubscriptionABI, contractAddress);
+    const txResult = await contract.methods.unfreeze().send({
+      from: ownerAddress
+    });
+
+    console.log('unpause tx result', txResult);
+  },
+
+  async switchWalletToAssetNetwork(walletWeb3, assetInfo){
+
+    const {network} = assetInfo;
     const {chainIdHex, chainId} = Blockchains[network];
 
     const walletChainId = await walletWeb3.eth.getChainId();
@@ -47,13 +85,6 @@ const Web3CommonApi = {
       console.log('switch wallet network', {from: walletChainId, to: chainIdHex})
       await Web3CommonApi.switchWalletToNetwork(walletWeb3, network);
     }
-
-    const contract = new walletWeb3.eth.Contract(Erc20ABI, tokenId);
-    const txResult = await contract.methods.approve(spenderAddress, approveAmount || MaxAmount).send({
-      from: ownerAddress
-    });
-
-    console.log('tx result', txResult);
   },
 
   async switchWalletToNetwork(walletWeb3, network){

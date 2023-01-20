@@ -23,6 +23,15 @@ function initSubscriptionsList(){
   body.on('activate-user-subscription-failed', async ()=> updateUserSubscriptions());
   body.on('deactivate-user-subscription-success', async ()=> updateUserSubscriptions());
   body.on('deactivate-user-subscription-failed', async ()=> updateUserSubscriptions());
+  body.on('pause-user-subscription-success', async ()=> updateUserSubscriptions());
+  body.on('pause-user-subscription-failed', async ()=> updateUserSubscriptions());
+  body.on('unpause-user-subscription-success', async ()=> updateUserSubscriptions());
+  body.on('unpause-user-subscription-failed', async ()=> updateUserSubscriptions());
+
+  // refresh updated status if need
+  setInterval(()=>{
+    refreshUserSubscriptions();
+  }, 10_000);
 }
 
 
@@ -84,6 +93,47 @@ async function updateUserSubscriptions(){
   }
 }
 
+
+async function refreshUserSubscriptions(){
+
+  if( ! AppState.walletConnected){
+    return;
+  }
+
+  try {
+
+    const address = await AppState.walletApi.getAddress();
+
+    const oldSubscriptions = AppState.userSubscriptions[address] || [];
+    const curSubscriptions = await Backend.getUserSubscriptions(address);
+
+    if( ! isUserSubscriptionsSame(oldSubscriptions, curSubscriptions)){
+      console.log('subscriptions updated');
+      setUserSubscriptions(address, curSubscriptions);
+    }
+
+  } catch (e){
+    // skip errors
+  }
+}
+
+function isUserSubscriptionsSame(listA, listB){
+  if(listA.length !== listB.length)
+    return false;
+
+  for(const dataA of listA){
+    const dataB = listB.find(item =>
+      item.planId === dataA.planId
+      && item.contractAddress === dataA.contractAddress);
+
+    if( ! dataB || dataA.status !== dataB.status){
+      return false;
+    }
+  }
+
+  return true;
+}
+
 async function showUserSubscriptions(){
 
   if( ! AppState.walletConnected){
@@ -137,7 +187,13 @@ function showUserSubscriptionActions(item, subscription){
 
   const activateBtn = $('.activate', item);
   const deactivateBtn = $('.deactivate', item);
+  const pauseBtn = $('.pause', item);
+  const unpauseBtn = $('.unpause', item);
+
   const status = subscription?.status;
+
+  pauseBtn.addClass('hide');
+  unpauseBtn.addClass('hide');
 
   if( ! status || status === 'Draft'){
     activateBtn.removeClass('hide');
@@ -145,7 +201,15 @@ function showUserSubscriptionActions(item, subscription){
   } else {
     activateBtn.addClass('hide');
     deactivateBtn.removeClass('hide');
+
+    if(status === 'Active'){
+      pauseBtn.removeClass('hide');
+    }
+    else if(status === 'Paused'){
+      unpauseBtn.removeClass('hide');
+    }
   }
+
 }
 
 
@@ -167,13 +231,27 @@ function createSubscriptionElem(plan){
   $('.description', elem).text(description);
   $('.amount', elem).text(`${price} ${abbr}`);
   $('.period', elem).text(roundedPeriodDays);
-  $('.tags', elem).text(tags.join(' '));
+
+  const tagsRoot = $('.tags', elem);
+  tags.forEach(tag => {
+    tagsRoot.append(`<span class="badge bg-light text-dark">${tag}</span>`);
+  });
+
   $('.activate', elem).click(()=>{
     body.trigger('activate-user-subscription-req', [id]);
   });
+
   $('.deactivate', elem).click(()=>{
     body.trigger('deactivate-user-subscription-req', [id]);
-  })
+  });
+
+  $('.pause', elem).click(()=>{
+    body.trigger('pause-user-subscription-req', [id]);
+  });
+
+  $('.unpause', elem).click(()=>{
+    body.trigger('unpause-user-subscription-req', [id]);
+  });
 
   return elem;
 }

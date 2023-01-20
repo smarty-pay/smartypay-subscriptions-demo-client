@@ -96,8 +96,8 @@
         <span>
           pay period: <span class='period'></span> days
         </span>
-        <span class='flex-row flex-gap-8 flex-align-baseline'>
-          tags: <span class="badge bg-light text-dark"><span class='tags'></span></span>
+        <span>
+          tags: <span class='tags flex-row flex-inline flex-wrap flex-gap-4 flex-align-baseline'></span>
         </span>
       </p>
     </div>
@@ -107,6 +107,8 @@
         <span class='status fs-5'></span>
       </div>
       <button type="button" class="activate hide btn btn-outline-primary">Activate</button>
+      <button type="button" class="pause hide btn btn-outline-primary">Pause</button>
+      <button type="button" class="unpause hide btn btn-outline-primary">Unpause</button>
       <button type="button" class="deactivate hide btn btn-outline-warning">Deactivate</button>
     </div>
   </div>
@@ -159,6 +161,8 @@
 <script src='./js/subscriptions-list.js'></script>
 <script src='./js/user-sub-activation.js'></script>
 <script src='./js/user-sub-deactivation.js'></script>
+<script src='./js/user-sub-pause.js'></script>
+<script src='./js/user-sub-unpause.js'></script>
 <script src='./js/index.js'></script>
 
 </body>

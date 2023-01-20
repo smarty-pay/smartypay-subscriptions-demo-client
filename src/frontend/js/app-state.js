@@ -20,13 +20,7 @@ function setSubscriptionPlans(plans){
 }
 
 function setUserSubscriptions(address, subscriptions){
-
   const body = $('body');
-
-  // ignore Cancelled subs
-  if(subscriptions){
-    subscriptions = subscriptions.filter(sub => sub.status !== 'Cancelled' && sub.status !== 'Draft');
-  }
 
   AppState.userSubscriptions[address] = subscriptions;
 

@@ -13,7 +13,7 @@ const Blockchains = {
   BinanceTestNet: {
     chainId: 97,
     chainIdHex: '0x61',
-    rpc: 'https://data-seed-prebsc-1-s1.binance.org:8545',
+    rpc: 'https://data-seed-prebsc-1-s3.binance.org:8545',
     explorer: 'https://testnet.bscscan.com',
     chainName: 'Binance Smart Chain Testnet',
     native: 'BNB',
@@ -364,4 +364,27 @@ const Erc20ABI = [
     "name": "Transfer",
     "type": "event"
   }
+];
+
+
+
+const SubscriptionABI = [
+  {
+    "constant": false,
+    "name": "freeze",
+    "inputs": [],
+    "outputs": [],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function",
+  },
+  {
+    "constant": false,
+    "name": "unfreeze",
+    "inputs": [],
+    "outputs": [],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function",
+  },
 ];

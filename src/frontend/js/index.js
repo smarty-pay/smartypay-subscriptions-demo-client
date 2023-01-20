@@ -7,6 +7,8 @@ dependencies:
   ./subscriptions-list.js
   ./user-sub-activation.js
   ./user-sub-deactivation.js
+  ./user-sub-pause.js
+  ./user-sub-unpause.js
 */
 
 /**
@@ -23,6 +25,8 @@ function initApp(){
   initSubscriptionsList();
   initUserSubscriptionActivation();
   initUserSubscriptionDeactivation();
+  initUserSubscriptionPause();
+  initUserSubscriptionUnpause();
 }
 
 
@@ -53,6 +57,12 @@ function initEventLogs(){
     'deactivate-user-subscription-req',
     'deactivate-user-subscription-success',
     'deactivate-user-subscription-failed',
+    'pause-user-subscription-req',
+    'pause-user-subscription-success',
+    'pause-user-subscription-failed',
+    'unpause-user-subscription-req',
+    'unpause-user-subscription-success',
+    'unpause-user-subscription-failed',
   ].forEach(eventName => {
     body.on(eventName, log);
   })
