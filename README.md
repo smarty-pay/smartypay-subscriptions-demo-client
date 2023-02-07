@@ -2,6 +2,8 @@
 
 Demo project with SmartyPay subscriptions.
 
+:no_entry: [DEPRECATED] Active at [https://github.com/{user}/{newproject}](smartypay-subscriptions-demo-react)
+
 ## Build and run
 ```
 > npm install
