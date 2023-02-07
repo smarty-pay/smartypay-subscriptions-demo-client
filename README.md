@@ -2,7 +2,7 @@
 
 Demo project with SmartyPay subscriptions.
 
-:no_entry: [DEPRECATED] Active at [https://github.com/{user}/{newproject}](smartypay-subscriptions-demo-react)
+:no_entry: [DEPRECATED] Active at [smartypay-subscriptions-demo-react](https://github.com/smarty-pay/smartypay-subscriptions-demo-react)
 
 ## Build and run
 ```
